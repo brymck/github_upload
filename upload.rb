@@ -11,7 +11,7 @@ require 'mime/types'
 module Net
   class HTTP
     def urlencode(str)
-      str.gsub(/[^a-zA-Z0-9_\.\-]/n) {|s| sprintf('%%%02x', s[0]) }
+      str.gsub(/[^a-zA-Z0-9_\.\-]/n) {|s| sprintf('%%%02x', s[0].ord) }
     end
 
     def post_form(path, params)
@@ -74,7 +74,7 @@ repo = ARGV[1]
 repo = $1 if repo.nil? && `git remote show origin` =~ /git@github.com:(.+?)\.git/
 die("Unable to find GitHub repo", true) if repo.nil?
 
-
+description = ARGV[2] || ""
 file = File.new(filename)
 mime_type = MIME::Types.type_for(filename)[0] || MIME::Types["application/octet-stream"][0]
 
@@ -93,7 +93,7 @@ res = http.post_form("/#{repo}/downloads", {
   :file_size => File.size(filename),
   :content_type => mime_type.simplified,
   :file_name => filename,
-  :description => '',
+  :description => description,
   :login => user,
   :token => token,
 })
