@@ -106,13 +106,14 @@ die "Unable to authorize upload" if data["signature"].nil?
 # Post to S3
 url = URI.parse "http://github.s3.amazonaws.com/"
 http = Net::HTTP.new url.host, url.port
+puts data.to_s
 res = http.post_multipart("/", {
   :key => "#{data["prefix"].first}#{filename}",
   :Filename => filename,
-  :policy => data["policy"].first,
-  :AWSAccessKeyId => data["accesskeyid"].first,
-  :signature => data["signature"].first,
-  :acl => data["acl"].first,
+  :policy => data["policy"]
+  :AWSAccessKeyId => data["accesskeyid"],
+  :signature => data["signature"],
+  :acl => data["acl"],
   :file => file,
   :success_action_status => 201
 })
