@@ -110,7 +110,7 @@ puts data.to_s
 res = http.post_multipart("/", {
   :key => "#{data["prefix"].first}#{filename}",
   :Filename => filename,
-  :policy => data["policy"]
+  :policy => data["policy"],
   :AWSAccessKeyId => data["accesskeyid"],
   :signature => data["signature"],
   :acl => data["acl"],
