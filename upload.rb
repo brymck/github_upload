@@ -5,8 +5,8 @@ require 'net/https'
 require "rubygems"
 require 'xmlsimple'
 require "time"
+require "json"
 require 'mime/types'
-
 
 module Net
   class HTTP
