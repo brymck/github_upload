@@ -108,7 +108,7 @@ url = URI.parse "http://github.s3.amazonaws.com/"
 http = Net::HTTP.new url.host, url.port
 puts data.to_s
 res = http.post_multipart("/", {
-  :key => "#{data["prefix"].first}#{filename}",
+  :key => "#{data["prefix"]}#{filename}",
   :Filename => filename,
   :policy => data["policy"],
   :AWSAccessKeyId => data["accesskeyid"],
