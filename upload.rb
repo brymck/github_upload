@@ -114,7 +114,6 @@ else
 end
 
 content_type = `file #{file_flags} #{File.expand_path(filename)}`.chomp
-puts content_type
 res = http.post_multipart("/", {
   :key => data["path"],
   :Filename => File.basename(filename),
