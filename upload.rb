@@ -107,13 +107,14 @@ die "Unable to authorize upload" if data["signature"].nil?
 url = URI.parse "http://github.s3.amazonaws.com/"
 http = Net::HTTP.new url.host, url.port
 res = http.post_multipart("/", {
-  :key => "#{data["prefix"]}/#{filename}",
-  :Filename => filename,
+  :key => data["path"],
+  :Filename => filename.basename.to_s,
   :policy => data["policy"],
   :AWSAccessKeyId => data["accesskeyid"],
   :signature => data["signature"],
   :acl => data["acl"],
   :file => file,
+  :"Content-Type" => file.type,
   :success_action_status => 201
 })
 die "File upload failed" unless res.class == Net::HTTPCreated
