@@ -106,7 +106,14 @@ die "Unable to authorize upload" if data["signature"].nil?
 # Post to S3
 url = URI.parse "http://github.s3.amazonaws.com/"
 http = Net::HTTP.new url.host, url.port
-content_type = `file -Ib #{File.expand_path(filename)}`.chomp
+
+if RUBY_PLATFORM =~ /mswin|mingw/
+  file_flags = "-ib"  # GnuWin32 is a bit different
+else
+  file_flags = "-Ib"
+end
+
+content_type = `file #{file_flags} #{File.expand_path(filename)}`.chomp
 res = http.post_multipart("/", {
   :key => data["path"],
   :Filename => File.basename(filename),
